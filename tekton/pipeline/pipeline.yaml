@@ -17,7 +17,7 @@ spec:
        default: "clean -DskipTests package"
      - name: runScript
        description: The buildah script to run
-       default: "/usr/local/bin/maven-buildah.sh"
+       default: "/usr/local/bin/maven-run.sh"
      - name: push
        default: "true"
        description: Whether to push the image to container registry
@@ -40,20 +40,20 @@ spec:
        default: "-d*"
      - name: namespace
        description: The Kubernetes Namespace
-       default: "default"
+       default: "tekton-pipelines"
    tasks:
     - name: build-native
       taskRef:
         name: build-image-from-git
       params:
       - name: mavenMirrorUrl
-        value: "${params.mavenMirrorUrl}"
+        value: "$(params.mavenMirrorUrl)"
       - name: mavenCmdArgs
-        value: "${params.mavenCmdArgs}"
+        value: "$(params.mavenCmdArgs)"
       - name: runScript
-        value: "${params.runScript}"
+        value: "$(params.runScript)"
       - name: push
-        value: "${params.push}"
+        value: "$(params.push)"
       resources:
         inputs:
           - name: git-source
@@ -66,17 +66,17 @@ spec:
         name: kubectl-task
       params: 
       - name: contextDir
-        value: "${params.contextDir}"
+        value: "(params.contextDir)"
       - name: resourceDir
-        value: "${params.resourceDir}"
+        value: "$(params.resourceDir)"
       - name: resourceFile
-        value: "${params.resourceFile}"
+        value: "$(params.resourceFile)"
       - name: yamlPath
-        value: "${params.yamlPath}"
+        value: "$(params.yamlPath)"
       - name: docs
-        value: "${params.docs}"
+        value: "$(params.docs)"
       - name: namespace
-        value: "${params.namespace}"
+        value: "$(params.namespace)"
       resources:
         inputs:
           - name: git-source
@@ -84,4 +84,4 @@ spec:
           - name: containerImage
             resource: app-container-image
             from:
-             - build-greeter-native
+             - build-native

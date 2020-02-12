@@ -3,7 +3,7 @@ kind: PipelineRun
 metadata:
   name: quarkus-tekton-pipeline-run
 spec:
-  serviceAccount: build-robot
+  serviceAccountName: build-robot
   pipelineRef:
     name: quarkus-tekton-pipeline
   resources:

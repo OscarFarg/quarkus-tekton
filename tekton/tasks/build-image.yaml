@@ -33,25 +33,18 @@ spec:
       imagePullPolicy: IfNotPresent
       env:
       - name: MAVEN_MIRROR_URL
-        value: "${inputs.params.mavenMirrorUrl}"
+        value: "$(inputs.params.mavenMirrorUrl)"
       - name: WORK_DIR
-        value: "${inputs.params.contextDir}"
+        value: "$(inputs.params.contextDir)"
       - name: PUSH
-        value: "${inputs.params.push}"
+        value: "$(inputs.params.push)"
       - name: MVN_CMD_ARGS
-        value: "${inputs.params.mavenCmdArgs}"
+        value: "$(inputs.params.mavenCmdArgs)"
       - name: DESTINATION_NAME
-        value: ${outputs.resources.builtImage.url}
+        value: $(outputs.resources.builtImage.url)
       args:
-       - "${inputs.params.runScript}"
+       - "$(inputs.params.runScript)"
       securityContext:
         privileged: true
         capabilities:
           add: ["SYS_ADMIN"]
-      volumeMounts:
-        - mountPath: /root/.m2
-          name: m2-cache
- volumes:
-    - name: m2-cache
-      persistentVolumeClaim:
-        claimName: m2-cache
