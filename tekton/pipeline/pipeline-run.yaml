@@ -1,0 +1,16 @@
+apiVersion: tekton.dev/v1alpha1
+kind: PipelineRun
+metadata:
+  name: quarkus-tekton-pipeline-run
+spec:
+  serviceAccount: build-robot
+  pipelineRef:
+    name: quarkus-tekton-pipeline
+  resources:
+    - name: source-repo
+      resourceRef:
+        name: tektondemo-git
+    - name: app-container-image
+      resourceRef:
+        name: tektondemo-image
+  
